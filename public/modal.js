@@ -1,6 +1,5 @@
 // modal elements
 const addBtn = document.querySelector('.add-item-btn');
-const modal = document.querySelector('.modal-backdrop');
 const saveImageBtn = document.querySelector('.btn-save'); 
 
 // input type file element
@@ -12,37 +11,14 @@ const imageContainer = document.querySelector('.image-container');
 let imageBlob;
 let imageFile;
 
+const modal = new Modal();
+
+
 // open modal
 addBtn.addEventListener('click', (e) => {
-    modal.style.display = 'flex';
+    modal.showModal();
 });
 
-// close modal 
-modal.addEventListener('click', (e) => {
-    if (modal === e.target) {
-        resetModal()
-    }
-})
-
-// reset modal function
-function resetModal() {
-    modal.style.display = 'none';
-
-    // reset input fields
-    document.querySelector('#item_title').value = '';
-    document.querySelector('#item_description').value = '';
-    document.querySelector('#item_destination').value = '';
-    document.querySelector('#item_size').value = '';
-    document.querySelector('#upload-image').value ='';
-
-    // remove image preview
-    const imagePreview = document.querySelector('.section2 .item-upload');
-    const imageFromPreview = document.querySelector('.section2 .item-upload img');
-    const uploadImageLabel = document.querySelector('label.upload-image-label');
-    uploadImageLabel.style.display = 'block'
-    imagePreview.style.display = 'none';
-    imagePreview.removeChild(imageFromPreview);
-}
 
 // create item function
 const createItem = (itemDetails) => {
@@ -139,7 +115,7 @@ saveImageBtn.addEventListener('click', async (e) => {
     // set post req to server
     const backendResponse = await sendFileToBackend(userData)
     // reset modal funciton
-    resetModal();
+    modal.resetModal()
     // create item function
     createItem(userData)
 
