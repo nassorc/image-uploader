@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./normalize.css" type="text/css"/>
+    <link rel="stylesheet" href="modal.css">
+    <script src="https://kit.fontawesome.com/17dfbab231.js" crossorigin="anonymous"></script>
+    <title>Image Uploader JS</title>
+</head>
+<body>
+    <div class="notification-container">
+        <div class="border-style">
+            <div class="notification-info">
+                <i class="fa-solid fa-check"></i>
+                <p>
+                    <div class="message">Image uploaded</div>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop">
+        <div class="modal-container">
+            <div class="side left-side">
+                <div class="section1">
+                    <div class="icon-container">
+                        <i class="fa-solid fa-ellipsis fa-2x ellipsis-icon"></i>
+                    </div>
+                </div>
+                <div class="section2">
+                    <label for="upload-image" class="upload-image-label">
+                        <div class="upload-image-container">
+                            <div class="dotted-border">
+                                <div class="upload-image-body">
+                                    <p>Select Image</p>
+                                </div>
+                                <div class="upload-image-footer">
+                                    <p>Recommend file size: 20mb</p>
+                                </div>
+                            </div>
+                        </div>
+                    </label>
+                    <input type="file" name="upload-image" id="upload-image">
+                    <div class="item-upload"></div>
+                </div>
+            </div>
+            <div class="side right-side">
+                <div class="section1">
+                    <select name="" id="item_size" class="select-input btn">
+                        <option value="" disabled selected>select</option>
+                        <option value="small" >small</option>
+                        <option value="medium" >medium</option>
+                        <option value="large" >large</option>
+                    </select>
+                    <button class="btn-save btn">save</button>
+                </div>
+                <div class="section2">
+                    <div class="form-container">
+                        <form action="">
+                            <div class="input-field">
+                                <input type="text" name="" id="item_title" placeholder="Title">
+                            </div>
+                            <div class="input-field">
+                                <input type="text" name="" id="item_description" placeholder="Description">
+                            </div>
+                            <div class="input-field">
+                                <input type="text" name="" id="item_destination" placeholder="Add a destination link">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header>
+        <nav class="nav container">
+            <div class="button-container">
+                <form action="http://localhost:3001/search" method="get">
+                    <div class="search-container">
+                        <input type="text" name="query" id="search-inp" placeholder="search">
+    
+                        <i class="fa-solid fa-magnifying-glass search-icon search-btn">
+                        <button>submnit</button>
+                        </i>
+                    </div>
+                    
+                </form>
+                <button class="add-item-btn">
+                    <i class="fa-solid fa-plus fa-lg"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="image-container container">
+        <!-- <div class="item item__large">
+            <div class="item-modal">
+                <div class="item-header">
+                    <div>Title</div>
+                    <button class="btn">Save</button>
+                </div>
+                <div class="item-footer">
+                    <a href="#">Link</a>
+                    <button>D</button>
+                    <button>...</button>
+                </div>
+            </div>
+            <img src="https://unsplash.it/400/600" alt="unspash" loading=lazy/>
+        </div>
+
+        <div class="item item__small">
+            <div class="item-modal">
+                <div class="item-header">
+                    <div>Title</div>
+                    <button class="btn">Save</button>
+                </div>
+                <div class="item-footer">
+                    <a href="#">Link</a>
+                    <button>D</button>
+                    <button>...</button>
+                </div>
+            </div>
+            <img src="./p1.jpg" alt="unspash" loading=lazy/>
+        </div>
+
+        <div class="item item__medium">
+            <div class="item-modal">
+                <div class="item-header">
+                    <div>Title</div>
+                    <button class="btn">Save</button>
+                </div>
+                <div class="item-footer">
+                    <a href="#">Link</a>
+                    <button>D</button>
+                    <button>...</button>
+                </div>
+            </div>
+            <img src="./p2.jpg" alt="unspash" loading=lazy/>
+        </div>
+
+        <div class="item item__small">
+            <div class="item-modal">
+                <div class="item-header">
+                    <div>Title</div>
+                    <button class="btn">Save</button>
+                </div>
+                <div class="item-footer">
+                    <a href="#">Link</a>
+                    <button>D</button>
+                    <button>...</button>
+                </div>
+            </div>
+            <img src="./p3.jpg" alt="unspash" loading=lazy/>
+        </div>
+
+        <div class="item item__large">
+            <div class="item-modal">
+                <div class="item-header">
+                    <div>Title</div>
+                    <button class="btn">Save</button>
+                </div>
+                <div class="item-footer">
+                    <a href="#">Link</a>
+                    <button>D</button>
+                    <button>...</button>
+                </div>
+            </div>
+            <img src="./p4.jpg" alt="unspash" loading=lazy/>
+        </div>
+
+        <div class="item item__small">
+            <div class="item-modal">
+                <div class="item-header">
+                    <div>Title</div>
+                    <button class="btn">Save</button>
+                </div>
+                <div class="item-footer">
+                    <a href="#">Link</a>
+                    <button>D</button>
+                    <button>...</button>
+                </div>
+            </div>
+            <img src="https://unsplash.it/400/580" alt="unspash" loading=lazy/>
+        </div>
+
+        <div class="item item__medium">
+            <div class="item-modal">
+                <div class="item-header">
+                    <div>Title</div>
+                    <button class="btn">Save</button>
+                </div>
+                <div class="item-footer">
+                    <a href="#">Link</a>
+                    <button>D</button>
+                    <button>...</button>
+                </div>
+            </div>
+            <img src="./p5.jpg" alt="unspash" loading=lazy/>
+        </div> -->
+    </div>
+    <script src="./Modal-class.js"></script>
+    <script src="./modal.js"></script>
+    <!-- <script src="./search.js"></script> -->
+</body>
+</html>

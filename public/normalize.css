@@ -1,0 +1,224 @@
+:root {
+  --card_width: 250px;
+  --row_increment: 10px;
+  --card_small: 26;
+  --card_medium: 33;
+  --card_large: 45;
+}
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  /* background-color: #252c30; */
+  font-family: sans-serif;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+header {
+  margin-bottom: 4rem;
+  width: 100%;
+  height: 80px;
+  /* background: coral; */
+}
+nav {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  text-align: right;
+}
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+nav .button-container {
+  display: flex;
+}
+nav .button-container > * {
+  margin-left: 24px;
+}
+nav .button-container .search-container {
+  position: relative;
+}
+nav .button-container .search-container .search-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+nav .button-container #search-inp {
+  padding-inline: 16px;
+  width: 400px;
+  height: 3.4em;
+  font-size: 0.9em;
+  letter-spacing: 0.8px;
+  background-color: #e3e3e3;
+  border: none;
+  border-radius: 30px;
+}
+nav .button-container #search-inp:hover {
+  background-color: #d1d1d1;
+}
+nav .button-container .add-item-btn {
+  position: relative;
+  appearance: none;
+  outline: none;
+  border: none;
+  background: none;
+  display: inline-grid;
+  place-items: center;
+  isolation: isolate;
+  cursor: pointer;
+}
+nav .button-container .add-item-btn:before {
+  content: "";
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background-color: #e3e3e3;
+  z-index: -1;
+  border-radius: 50%;
+  transition: all 300ms ease;
+}
+nav .button-container .add-item-btn:hover:before {
+  transform: scale(1.15);
+  background-color: #d1d1d1;
+}
+img {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+.image-container {
+  margin-inline: auto;
+  /* background-color: #2f4952; */
+  display: grid;
+  column-gap: 24px;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, var(--card_width));
+  grid-auto-rows: var(--row_increment);
+}
+.item {
+  background-color: #fffbf2;
+  margin-top: 12px;
+  position: relative;
+  color: white;
+  font-size: 1.6em;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.item__small {
+  grid-row-end: span var(--card_small);
+}
+.item__medium {
+  grid-row-end: span var(--card_medium);
+}
+.item__large {
+  grid-row-end: span var(--card_large);
+}
+
+.item-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 24px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: all 300ms ease;
+}
+.item-modal:hover {
+  opacity: 1;
+  transform: scale(1);
+  background: rgba(1, 1, 1, 0.2);
+}
+.item-header,
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.span2 {
+  grid-column-end: span 2;
+}
+
+/* notification */
+.notification-container {
+  margin-top: 18px;
+  padding: 2px;
+  background-color: grey;
+  width: 400px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  border-radius: 28px;
+
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -200px);
+  opacity: 0;
+  z-index: 9999;
+  transition: all 500ms ease;
+}
+
+.show-notification {
+  transform: translate(-50%, 0px);
+  opacity: 1;
+}
+
+.border-style {
+  width: 100%;
+  height: 100%;
+  border: 1px solid white;
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+}
+
+.notification-info {
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+}
+.notification-info * + * {
+  margin-left: 8px;
+}
+button.btn-remove {
+  display: inline-grid;
+  place-items: center;
+  appearance: none;
+  background: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  isolation: isolate;
+}
+button.btn-remove:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 48px;
+  height: 48px;
+
+  background-color: #f07b73;
+  border-radius: 50%;
+}
