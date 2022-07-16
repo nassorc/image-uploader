@@ -26,6 +26,7 @@ const Modal = {
 const APP = {
     root: null,
     file: null,
+    fileName: null,
     blob: null,
     imageData: null,
     init: () => {
@@ -81,8 +82,9 @@ const APP = {
     handleImageFile: (ev) => {
         const inpImageFile = ev.target;
         APP.file = inpImageFile.files[0];
+        APP.fileName = APP.file.name;
         const imgElm = document.createElement('img');
-        console.log(APP.file)
+
         if (APP.file.type.match(/image.*/)) {
             const reader = new FileReader();
             reader.readAsDataURL(APP.file);
@@ -97,28 +99,17 @@ const APP = {
         }
     },
     ///////////////////////////////////////////////////////////////////////
-    saveImageUnit: (ev) => {
+    saveImageUnit: async (ev) => {
         // retrieve form values
         const title = document.querySelector('#item_title').value;
         const description = document.querySelector('#item_description').value;
         const destination = document.querySelector('#item_destination').value;
         const imageSize = document.querySelector('#item_size').value;
-
-        // validate inputs values
+        // validate inputs values  
         if(!title || !description || !destination || !imageSize || !APP.blob) {
             alert('Please fill in all input fields.');
             return;
         }
-
-        // APP.imageData = {
-        //     author: 'matthew',
-        //     createOn: new Date().toISOString(),
-        //     title: title,
-        //     description: description,
-        //     destination: destination,
-        //     imgBlob: APP.blob,
-        //     itemSize: imageSize,
-        // }
         APP.imageData = new FormData();
         APP.imageData.append('author', 'matthew');
         APP.imageData.append('createdOn', new Date().toISOString());
@@ -127,13 +118,23 @@ const APP = {
         APP.imageData.append('destination', destination);
         APP.imageData.append('imgBlob', APP.blob);
         APP.imageData.append('itemSize', imageSize);
-        // APP.imageData.append('');
-        // APP.imageData.append();
-        console.log(APP.iamgeData)
+        APP.imageData.append('imageName', APP.fileName);
+        APP.imageData.append(APP.fileName, APP.file);
+        console.log(Array.from(APP.imageData))
 
         APP.resetModal();
+        const r = await APP.sendDataToBackend()
     },
     ///////////////////////////////////////////////////////////////////////
+    sendDataToBackend: async () => {
+        const res = await fetch('http://localhost:3001/upload', {
+            method: 'POST',
+            body: APP.imageData
+        });
+        const json = await res.json();
+        console.log(json)
+        // return json;
+    }
 }
 
 window.addEventListener('DOMContentLoaded', APP.init())

@@ -7,7 +7,7 @@ class ImageItemModel {
     static saveItem (imageItemDetails) {
         const sql = `INSERT INTO image_details
         (image_author, image_title, image_description, image_destination, image_size, image_file_name, createdOn)
-        VALUES ('${imageItemDetails.author}', '${imageItemDetails.title}', '${imageItemDetails.description}', '${imageItemDetails.destination}','${imageItemDetails.item_size}', '${imageItemDetails.imageName}','${imageItemDetails.item_size}');`
+        VALUES ('${imageItemDetails.author}', '${imageItemDetails.title}', '${imageItemDetails.description}', '${imageItemDetails.destination}','${imageItemDetails.itemSize}', '${imageItemDetails.imageName}','${imageItemDetails.createdOn}');`
         const newItem = db.execute(sql);
         return newItem;
     }

@@ -9,7 +9,6 @@ exports.uploadImageItem = async (req, res, next) => {
     const imageNameId = uniqid(); 
     imageItemDetails.imageName = imageItemDetails.imageName.split('.')[0] + '-' + imageNameId + '.' + imageItemDetails.imageName.split('.')[1]
     const imageRef = ref(storage, imageItemDetails.imageName)
-
     uploadBytes(imageRef, uploadFile.data)
     .then(async (snapshot) => {
         try {
