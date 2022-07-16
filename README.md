@@ -1,3 +1,3 @@
 ## Bugs
 
-- After adding image, image does not replace the temp element.
+- After adding image, image does not replace the placeholder element.
