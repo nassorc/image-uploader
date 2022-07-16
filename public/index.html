@@ -4,22 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./normalize.css" type="text/css"/>
-    <link rel="stylesheet" href="modal.css">
+    <!-- <link rel="stylesheet" href="./normalize.css" type="text/css"/>
+    <link rel="stylesheet" href="modal.css"> -->
+    <link rel="stylesheet" href="./styles/normalize.css">
+    <link rel="stylesheet" href="./styles/global-styles.css">
+    <link rel="stylesheet" href="./styles/components/header.css">
+    <link rel="stylesheet" href="./styles/components/image-unit.css">
+    <link rel="stylesheet" href="./styles/components/modal.css">
     <script src="https://kit.fontawesome.com/17dfbab231.js" crossorigin="anonymous"></script>
     <title>Image Uploader JS</title>
 </head>
 <body>
-    <div class="notification-container">
-        <div class="border-style">
-            <div class="notification-info">
-                <i class="fa-solid fa-check"></i>
-                <p>
-                    <div class="message">Image uploaded</div>
-                </p>
-            </div>
-        </div>
-    </div>
     <div class="modal-backdrop">
         <div class="modal-container">
             <div class="side left-side">
@@ -53,7 +48,7 @@
                         <option value="medium" >medium</option>
                         <option value="large" >large</option>
                     </select>
-                    <button class="btn-save btn">save</button>
+                    <button class="btn-save btn" id="btn-save">save</button>
                 </div>
                 <div class="section2">
                     <div class="form-container">
@@ -93,113 +88,8 @@
         </nav>
     </header>
     <div class="image-container container">
-        <!-- <div class="item item__large">
-            <div class="item-modal">
-                <div class="item-header">
-                    <div>Title</div>
-                    <button class="btn">Save</button>
-                </div>
-                <div class="item-footer">
-                    <a href="#">Link</a>
-                    <button>D</button>
-                    <button>...</button>
-                </div>
-            </div>
-            <img src="https://unsplash.it/400/600" alt="unspash" loading=lazy/>
-        </div>
-
-        <div class="item item__small">
-            <div class="item-modal">
-                <div class="item-header">
-                    <div>Title</div>
-                    <button class="btn">Save</button>
-                </div>
-                <div class="item-footer">
-                    <a href="#">Link</a>
-                    <button>D</button>
-                    <button>...</button>
-                </div>
-            </div>
-            <img src="./p1.jpg" alt="unspash" loading=lazy/>
-        </div>
-
-        <div class="item item__medium">
-            <div class="item-modal">
-                <div class="item-header">
-                    <div>Title</div>
-                    <button class="btn">Save</button>
-                </div>
-                <div class="item-footer">
-                    <a href="#">Link</a>
-                    <button>D</button>
-                    <button>...</button>
-                </div>
-            </div>
-            <img src="./p2.jpg" alt="unspash" loading=lazy/>
-        </div>
-
-        <div class="item item__small">
-            <div class="item-modal">
-                <div class="item-header">
-                    <div>Title</div>
-                    <button class="btn">Save</button>
-                </div>
-                <div class="item-footer">
-                    <a href="#">Link</a>
-                    <button>D</button>
-                    <button>...</button>
-                </div>
-            </div>
-            <img src="./p3.jpg" alt="unspash" loading=lazy/>
-        </div>
-
-        <div class="item item__large">
-            <div class="item-modal">
-                <div class="item-header">
-                    <div>Title</div>
-                    <button class="btn">Save</button>
-                </div>
-                <div class="item-footer">
-                    <a href="#">Link</a>
-                    <button>D</button>
-                    <button>...</button>
-                </div>
-            </div>
-            <img src="./p4.jpg" alt="unspash" loading=lazy/>
-        </div>
-
-        <div class="item item__small">
-            <div class="item-modal">
-                <div class="item-header">
-                    <div>Title</div>
-                    <button class="btn">Save</button>
-                </div>
-                <div class="item-footer">
-                    <a href="#">Link</a>
-                    <button>D</button>
-                    <button>...</button>
-                </div>
-            </div>
-            <img src="https://unsplash.it/400/580" alt="unspash" loading=lazy/>
-        </div>
-
-        <div class="item item__medium">
-            <div class="item-modal">
-                <div class="item-header">
-                    <div>Title</div>
-                    <button class="btn">Save</button>
-                </div>
-                <div class="item-footer">
-                    <a href="#">Link</a>
-                    <button>D</button>
-                    <button>...</button>
-                </div>
-            </div>
-            <img src="./p5.jpg" alt="unspash" loading=lazy/>
-        </div> -->
     </div>
-    <script src="./Modal-class.js"></script>
+    <script src="./index.js"></script>
     <script src="./modal.js"></script>
-    <!-- <script src="./search.js"></script> -->
 </body>
 </html>

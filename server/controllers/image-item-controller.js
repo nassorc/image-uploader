@@ -5,21 +5,32 @@ const uniqid = require('uniqid');
 
 exports.uploadImageItem = async (req, res, next) => {
     const uploadFile = req.files[Object.keys(req.files)];
-    const imageNameId = uniqid(); 
     const imageItemDetails = req.body;
+    const imageNameId = uniqid(); 
     imageItemDetails.imageName = imageItemDetails.imageName.split('.')[0] + '-' + imageNameId + '.' + imageItemDetails.imageName.split('.')[1]
     const imageRef = ref(storage, imageItemDetails.imageName)
 
     uploadBytes(imageRef, uploadFile.data)
     .then(async (snapshot) => {
         try {
-            const response = await ImageModel.saveItem(imageItemDetails)
+            let response = await ImageModel.saveItem(imageItemDetails);
+            response = response[0]['insertId']
+            return res.status(200).json({id: response});
+
         } catch (err) {
-            console.log(err)
+            console.log(err);
+            return res.status(501).json({message: 'Error'})
         }
     });
 
-    return res.status(200).json({message: 'image uploaded'});
+}
+
+exports.deleteImageItem = async (req, res, next) => {
+    try {
+
+    } catch (err) {
+        
+    }
 }
 
 exports.getAllImageItems = async (req, res, next) => {
@@ -40,6 +51,7 @@ exports.getAllImageItems = async (req, res, next) => {
 
 const createImageObject = (imageDetails, imageUrl) => {
     return {
+        id: imageDetails.image_id,
         author: imageDetails.image_author,
         createOn: imageDetails.createdOn,
         title: imageDetails.image_title,

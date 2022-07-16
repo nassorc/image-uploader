@@ -37,19 +37,19 @@ class Modal {
                             <option value="medium" >medium</option>
                             <option value="large" >large</option>
                         </select>
-                        <button class="btn-save btn">save</button>
+                        <button class="btn-save btn" id="btn-save">save</button>
                     </div>
                     <div class="section2">
                         <div class="form-container">
                             <form action="">
                                 <div class="input-field">
-                                    <input type="text" name="" id="item_title" placeholder="Title">
+                                    <input type="text" name="title" id="item_title" placeholder="Title">
                                 </div>
                                 <div class="input-field">
-                                    <input type="text" name="" id="item_description" placeholder="Description">
+                                    <input type="text" name="description" id="item_description" placeholder="Description">
                                 </div>
                                 <div class="input-field">
-                                    <input type="text" name="" id="item_destination" placeholder="Add a destination link">
+                                    <input type="text" name="destination" id="item_destination" placeholder="Add a destination link">
                                 </div>
                             </form>
                         </div>
@@ -65,6 +65,11 @@ class Modal {
                 this.resetModal();
             }
         })
+        
+        // add saving functionality
+        // this.root.querySelector('.btn-save').addEventListener('click', () => {
+        //     console.log('clicked')
+        // })
     }
     showModal() {
         this.root.style.display = 'flex';
@@ -86,6 +91,7 @@ class Modal {
         const uploadImageLabel = this.root.querySelector('label.upload-image-label');
         uploadImageLabel.style.display = 'block'
         imagePreview.style.display = 'none';
-        imagePreview.removeChild(imageFromPreview);
+        // imagePreview.removeChild(imageFromPreview);
     }
+
 }
