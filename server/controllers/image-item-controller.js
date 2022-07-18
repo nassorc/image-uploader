@@ -12,9 +12,15 @@ exports.uploadImageItem = async (req, res, next) => {
     uploadBytes(imageRef, uploadFile.data)
     .then(async (snapshot) => {
         try {
+            let returnObject = [];
             let response = await ImageModel.saveItem(imageItemDetails);
-            response = response[0]['insertId']
-            return res.status(200).json({id: response});
+            let userId = response[0]['insertId']
+            let userData = (await ImageModel.findById(userId))[0][0];
+
+            // userData['image_url'] = getImageFile(userData['image_file_name']);
+            let url = await getImageFile(userData['image_file_name']);
+            returnObject.push(createImageObject(userData, url));
+            return res.status(200).json(returnObject);
 
         } catch (err) {
             console.log(err);
@@ -32,7 +38,19 @@ exports.deleteImageItem = async (req, res, next) => {
     }
 }
 
-exports.getAllImageItems = async (req, res, next) => {
+async function getImageFile (imagePath) {
+    try {
+        const imageRef = await ref(storage, imagePath);
+        // console.log(imagePath)
+        const url = await getDownloadURL(imageRef);
+        console.log(url)
+        return url;
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+exports.getAllImageFiles = async (req, res, next) => {
     try {
         const allImageDetails = [];
         const [allImages, _] = await ImageModel.findAll();
@@ -61,98 +79,3 @@ const createImageObject = (imageDetails, imageUrl) => {
         imageUrl: imageUrl,
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// GETALLIMAGESITEMS
-// app.get('/images', async (req, res) => {
-//     const databaseResults = []
-//     const [allImages, _] = await db.execute('SELECT * FROM image_details')
-//     console.log(allImages)
-//     // create db connection
-//     // await pool.getConnection(async (err, connection) => {
-
-//     //     if (err) return res.status(500).json({message: 'Server errror: cannot connect to database'})
-//     //     const sql = 'SELECT * FROM image_details'
-
-//     //     connection.query(sql, (err, results) => {
-//     //         connection.release()
-//     //         if (err) return res.status(500).json({message: 'Query failed'})
-//     //         for (let row of results) {
-//     //             databaseResults.push(
-//     //                 {
-//     //                     author: row.image_author,
-//     //                     createOn: row.createdOn,
-//     //                     title: row.image_title,
-//     //                     description: row.image_description,
-//     //                     destination: row.image_destination,
-//     //                     item_size: row.image_size,
-//     //                     imageName: row.image_file_name,
-//     //                 }
-//     //             )
-//     //         }
-//     //         // results.forEach(row => {
-//     //         //     databaseResults.push(
-//     //         //         {
-//     //         //             author: row.image_author,
-//     //         //             createOn: row.createdOn,
-//     //         //             title: row.image_title,
-//     //         //             description: row.image_description,
-//     //         //             destination: row.image_destination,
-//     //         //             item_size: row.image_size,
-//     //         //             imageName: row.image_file_name,
-//     //         //         }
-//     //         //     )
-//     //         // })
-//     //     })
-//     // })
-//     // console.log(r)
-//     // return res.status(200).json({images: r})
-//     // use reft to get individual images
-
-//     // append to list
-
-//     // download url
-
-//     // return list
-
-//     // let imageListRef = ref(storage)
-//     // let imageUrlList = []
-//     // let imageFileNames = []
-//     // let imageReturnItems = []
-//     // let returnObject;
-
-//     // console.log(imageListRef)
-
-//     // await listAll(imageListRef)
-//     // .then(async (response) => {
-//     //     for (let image of response.items) {
-//     //         const fileName = image._location.path_
-//     //         const url = await getDownloadURL(image)
-//     //         // imageUrlList.push(url)
-//     //         // imageFileNames.push(fileName)
-//     //         returnObject = await createImageReturnObject(fileName, url)
-//     //         console.log(returnObject)
-//     //         // imageReturnItems.push(returnObject)
-//     //         // console.log(imageReturnItems)
-//     //     }
-//     // })
-
-//     // return res.json({imageDetails: imageReturnItems}
-
-// })

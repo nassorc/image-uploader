@@ -7,6 +7,10 @@ const app = express();
 const imageItemController = require('./controllers/image-item-controller');
 require('dotenv').config();
 
+const compression = require('compression');
+
+app.use(compression())
+
 app.use(cors());
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
@@ -20,7 +24,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
 })
 app.post('/upload', fileUpload({ createParentPath: true }), imageItemController.uploadImageItem);
-app.get('/images', imageItemController.getAllImageItems);
+app.get('/images', imageItemController.getAllImageFiles);
 app.get('/search', async (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'search-results.html'))
 })

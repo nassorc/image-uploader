@@ -15,7 +15,7 @@
     <title>Image Uploader JS</title>
 </head>
 <body>
-    <div class="modal-backdrop">
+    <div class="modal-backdrop" id="modalBackdrop">
         <div class="modal-container">
             <div class="side left-side">
                 <div class="section1">
@@ -52,7 +52,7 @@
                 </div>
                 <div class="section2">
                     <div class="form-container">
-                        <form action="">
+                        <form action="" id="">
                             <div class="input-field">
                                 <input type="text" name="" id="item_title" placeholder="Title">
                             </div>
@@ -81,7 +81,7 @@
                     </div>
                     
                 </form>
-                <button class="add-item-btn">
+                <button class="add-item-btn" id="btnOpenModal">
                     <i class="fa-solid fa-plus fa-lg"></i>
                 </button>
             </div>
@@ -89,7 +89,7 @@
     </header>
     <div class="image-container container">
     </div>
-    <script src="./index.js"></script>
-    <script src="./modal.js"></script>
+    <!-- <script src="./index.js"></script> -->
+    <script src="./app.js"></script>
 </body>
 </html>

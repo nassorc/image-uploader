@@ -15,7 +15,7 @@ class ImageItemModel {
         return db.execute('SELECT * FROM image_details');
     }
     static findById(id) {
-        return db.execute(`SELECT * FROM image_details WHERE id = ${id}`)
+        return db.execute(`SELECT * FROM image_details WHERE image_id = ${id}`)
     }
 }
 

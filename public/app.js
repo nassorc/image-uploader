@@ -1,36 +1,18 @@
-
-const Modal = {
-    root: null,
-    init: () => {
-        Modal.addListeners();
-        Modal.root = document.getElementById('modalBackdrop');
-    },
-    addListeners: () => {
-        document
-            .getElementById('btnOpenModal')
-            .addEventListener('click', Modal.openModal);
-        Modal
-            .root
-            .addEventListener('click', Modal.resetModal)
-    },
-    ///////////////////////////////////////////////////////////////////////
-    openModal: (ev) => {
-        Modal.root.style.display = 'flex';
-    },
-    ///////////////////////////////////////////////////////////////////////
-    resetModal: (ev) => {
-        
-    }
-}
-
 const APP = {
-    root: null,
+    modalRoot: null,
     file: null,
     fileName: null,
     blob: null,
     imageData: null,
-    init: () => {
-        APP.root = document.getElementById('modalBackdrop');
+    init: async () => {
+        // fetch all saved images
+        const res = await APP.getAllImages();
+        const images = await res.json();
+        images.forEach(image => {
+            APP.createImageUnit(image)
+
+        });
+        APP.modalRoot = document.getElementById('modalBackdrop');
         APP.addListeners();
     },
     addListeners: () => {
@@ -47,20 +29,23 @@ const APP = {
             .getElementById('btn-save')
             .addEventListener('click', APP.saveImageUnit);
     },
+    getAllImages: () => {
+        return fetch('http://localhost:3001/images');
+    },
     ///////////////////////////////////////////////////////////////////////
     openModal: (ev) => {
-        APP.root.style.display = 'flex';
+        APP.modalRoot.style.display = 'flex';
     },
     ///////////////////////////////////////////////////////////////////////
     closeModal: (ev) => {
-        if (ev.target === APP.root) {
+        if (ev.target === APP.modalRoot) {
             APP.resetModal();
         }
     },
     ///////////////////////////////////////////////////////////////////////
     resetModal: () => {
         // hide modal
-        APP.root.style.display = 'none';
+        APP.modalRoot.style.display = 'none';
         // reset input fields
         document.querySelector('#item_title').value = '';
         document.querySelector('#item_description').value = '';
@@ -124,6 +109,7 @@ const APP = {
 
         APP.resetModal();
         const r = await APP.sendDataToBackend()
+        APP.createImageUnit(r[0]);
     },
     ///////////////////////////////////////////////////////////////////////
     sendDataToBackend: async () => {
@@ -132,9 +118,34 @@ const APP = {
             body: APP.imageData
         });
         const json = await res.json();
-        console.log(json)
-        // return json;
+        return json;
+    },
+    ///////////////////////////////////////////////////////////////////////
+    createImageUnit: (itemDetails) => {
+        const imageContainer = document.querySelector('.image-container');  // container to append to
+    
+        const divElm = document.createElement('div');
+        const imgElm = document.createElement('img');
+        divElm.classList.add('item')
+        divElm.classList.add(`item__${itemDetails.item_size}`)
+        divElm.dataset.id = itemDetails.id
+        imgElm.src = (itemDetails.imageUrl) ? itemDetails.imageUrl : `${itemDetails.img_blob}`
+    
+        divElm.innerHTML += `
+        <div class="item-modal">
+            <div class="item-header">
+                <div>${itemDetails.title}</div>
+                <button class="btn btn-delete btn-remove">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+            
+        </div>
+        `;
+        divElm.appendChild(imgElm);
+        imageContainer.appendChild(divElm)
     }
+
 }
 
-window.addEventListener('DOMContentLoaded', APP.init())
+window.addEventListener('DOMContentLoaded', APP.init);
