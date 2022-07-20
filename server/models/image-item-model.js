@@ -15,7 +15,10 @@ class ImageItemModel {
         return db.execute('SELECT * FROM image_details');
     }
     static findById(id) {
-        return db.execute(`SELECT * FROM image_details WHERE image_id = ${id}`)
+        return db.execute(`SELECT * FROM image_details WHERE image_id = '${id}'`)
+    }
+    static deleteById(id) {
+        return db.execute(`DELETE FROM image_details WHERE image_id = '${id}'`);
     }
 }
 

@@ -29,6 +29,7 @@ app.get('/search', async (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'search-results.html'))
 })
 app.delete('/delete/:id', imageItemController.deleteImageItem);
+app.get('/get/:id', imageItemController.getOne);
 app.listen(3001, () => {
     console.log('listening on port 3001')
 })

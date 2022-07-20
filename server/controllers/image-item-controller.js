@@ -1,5 +1,5 @@
 const { storage } = require('../config/firbase-config');
-const { ref, getDownloadURL, uploadBytes } = require('firebase/storage');
+const { ref, getDownloadURL, uploadBytes, deleteObject } = require('firebase/storage');
 const ImageModel = require('../models/image-item-model');
 const uniqid = require('uniqid');
 
@@ -16,8 +16,6 @@ exports.uploadImageItem = async (req, res, next) => {
             let response = await ImageModel.saveItem(imageItemDetails);
             let userId = response[0]['insertId']
             let userData = (await ImageModel.findById(userId))[0][0];
-
-            // userData['image_url'] = getImageFile(userData['image_file_name']);
             let url = await getImageFile(userData['image_file_name']);
             returnObject.push(createImageObject(userData, url));
             return res.status(200).json(returnObject);
@@ -31,11 +29,25 @@ exports.uploadImageItem = async (req, res, next) => {
 }
 
 exports.deleteImageItem = async (req, res, next) => {
+    // delete file from firebase
+    // delete database record
+    const id = req.params['id'];
     try {
-
+        const imagePath = (await ImageModel.findById(id))[0][0]['image_file_name'];
     } catch (err) {
-        
+        console.log(err);
+        return res.send(500).json({message: err.message});
     }
+
+    const imageRef = ref(storage, imagePath);
+    deleteObject(imageRef).then(() => {
+        ImageModel.deleteById(id)
+        return res.status(200).json({message: 'okok'})
+    }). catch((err) => {
+        console.log(err);
+        return res.status(500).json({message: 'can not delete file from firebase'})
+
+    })
 }
 
 async function getImageFile (imagePath) {
@@ -57,7 +69,12 @@ exports.getAllImageFiles = async (req, res, next) => {
 
         for (let item of allImages) {
             const imageRef = ref(storage, item.image_file_name);
-            const url = await getDownloadURL(imageRef);
+            let url;
+            try {
+                url = await getDownloadURL(imageRef);
+            } catch (err) {
+                continue;
+            }
             allImageDetails.push(createImageObject(item, url));
         }
         res.status(200).json(allImageDetails);
@@ -65,6 +82,10 @@ exports.getAllImageFiles = async (req, res, next) => {
         console.log(err)
     }
 }
+
+exports.getOne = async (req,res,next) => {
+    const query = req.params;
+} 
 
 const createImageObject = (imageDetails, imageUrl) => {
     return {

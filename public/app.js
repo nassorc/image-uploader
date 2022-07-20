@@ -28,6 +28,11 @@ const APP = {
         document
             .getElementById('btn-save')
             .addEventListener('click', APP.saveImageUnit);
+        document
+            .querySelectorAll('.btn-remove')
+            .forEach(btn => {
+                btn.addEventListener('click', APP.deleteImageUnit);
+            })
     },
     getAllImages: () => {
         return fetch('http://localhost:3001/images');
@@ -135,7 +140,7 @@ const APP = {
         <div class="item-modal">
             <div class="item-header">
                 <div>${itemDetails.title}</div>
-                <button class="btn btn-delete btn-remove">
+                <button class="btn btn-remove">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             </div>
@@ -144,6 +149,25 @@ const APP = {
         `;
         divElm.appendChild(imgElm);
         imageContainer.appendChild(divElm)
+        APP.addListeners();
+    },
+    ///////////////////////////////////////////////////////////////////////
+    deleteImageUnit: async (ev) => {
+        console.log('dletjkfljdsljflskdjl')
+        const target = ev.target;
+        const parent = target.closest('div.item');
+        const unitId = parent.dataset.id;
+        
+        const res = await APP.deleteImage(unitId);
+        const data = await res.json();
+        console.log(data)
+        parent.remove();
+        
+    },
+    deleteImage: (id) => {
+        return fetch(`/delete/${id}`, {
+            method: 'DELETE',
+        });
     }
 
 }
