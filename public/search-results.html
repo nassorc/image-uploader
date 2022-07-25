@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./normalize.css" type="text/css"/>
-    <link rel="stylesheet" href="modal.css">
+    <link rel="stylesheet" href="./styles/normalize.css" type="text/css"/>
+    <link rel="stylesheet" href="./styles/components/modal.css">
+    <link rel="stylesheet" href="./styles/components/image-unit.css">
     <title>Search results</title>
     <style>
     </style>
 </head>
 <body>
-    <div class="modal-backdrop">
+    <div class="modal-backdrop" id="modalBackdrop">
         <div class="modal-container">
             <div class="side left-side">
                 <div class="section1">
@@ -44,11 +45,11 @@
                         <option value="medium" >medium</option>
                         <option value="large" >large</option>
                     </select>
-                    <button class="btn-save btn">save</button>
+                    <button class="btn-save btn" id="btn-save">save</button>
                 </div>
                 <div class="section2">
                     <div class="form-container">
-                        <form action="">
+                        <form action="" id="">
                             <div class="input-field">
                                 <input type="text" name="" id="item_title" placeholder="Title">
                             </div>
@@ -67,8 +68,7 @@
     <h1>search results</h1>
     <main class="root"></main>
     <button class="btn-load">Load more</button>
-    <script src="./delete/Modal-class.js"></script>
-    <!-- <script src="./modal.js"></script> -->
+    <script src="./app.js"></script>
     <script src="./search-results.js"></script>
 </body>
 </html>

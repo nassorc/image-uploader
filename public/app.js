@@ -1,4 +1,5 @@
 const APP = {
+    main: false,
     modalRoot: null,
     file: null,
     fileName: null,
@@ -6,19 +7,24 @@ const APP = {
     imageData: null,
     init: async () => {
         // fetch all saved images
-        const res = await APP.getAllImages();
-        const images = await res.json();
-        images.forEach(image => {
-            APP.createImageUnit(image)
+        if (location.pathname === '/'){
+            APP.main = true;
+            const res = await APP.getAllImages();
+            const images = await res.json();
+            images.forEach(image => {
+                APP.createImageUnit(image)
 
-        });
+            });
+        }
         APP.modalRoot = document.getElementById('modalBackdrop');
         APP.addListeners();
     },
     addListeners: () => {
-        document
-            .getElementById('btnOpenModal')
-            .addEventListener('click', APP.openModal);
+        (document.getElementById('btnOpenModal'))
+        ? document.getElementById('btnOpenModal').addEventListener('click', APP.openModal)
+        : document.querySelectorAll('.btnOpenModal').forEach(btn => {
+            btn.addEventListener('click', (ev) => APP.openModalIfImageExists(ev));
+        })
         document
             .getElementById('modalBackdrop')
             .addEventListener('click', APP.closeModal);
@@ -32,7 +38,19 @@ const APP = {
             .querySelectorAll('.btn-remove')
             .forEach(btn => {
                 btn.addEventListener('click', APP.deleteImageUnit);
-            })
+            });
+    },
+    openModalIfImageExists: (ev) => {
+        APP.openModal(ev);
+        const parent = ev.target.closest('.item');
+        APP.blob = parent.querySelector('img').src;
+        
+        const imgElm = document.createElement('img');
+        imgElm.src = APP.blob;
+
+        document.querySelector('label.upload-image-label').style.display = 'none';
+        document.querySelector('.section2 .item-upload').style.display = 'block';
+        document.querySelector('.section2 .item-upload').appendChild(imgElm);
     },
     getAllImages: () => {
         return fetch('http://localhost:3001/images');
@@ -97,7 +115,7 @@ const APP = {
         const imageSize = document.querySelector('#item_size').value;
         // validate inputs values  
         if(!title || !description || !destination || !imageSize || !APP.blob) {
-            alert('Please fill in all input fields.');
+            alert( 'Please fill in all input fields.');
             return;
         }
         APP.imageData = new FormData();
@@ -113,8 +131,16 @@ const APP = {
         console.log(Array.from(APP.imageData))
 
         APP.resetModal();
-        const r = await APP.sendDataToBackend()
-        APP.createImageUnit(r[0]);
+        const {id, url} = await APP.sendDataToBackend()
+        const data = {
+            image_id: id,
+            image_url: url,
+            image_size: imageSize,
+            image_title: title,
+        }
+        if(APP.main) {
+            APP.createImageUnit(data);
+        }
     },
     ///////////////////////////////////////////////////////////////////////
     sendDataToBackend: async () => {
@@ -122,24 +148,26 @@ const APP = {
             method: 'POST',
             body: APP.imageData
         });
+        console.log(res)
         const json = await res.json();
         return json;
     },
     ///////////////////////////////////////////////////////////////////////
     createImageUnit: (itemDetails) => {
+        console.log('about to create an image unit')
         const imageContainer = document.querySelector('.image-container');  // container to append to
     
         const divElm = document.createElement('div');
         const imgElm = document.createElement('img');
         divElm.classList.add('item')
-        divElm.classList.add(`item__${itemDetails.item_size}`)
-        divElm.dataset.id = itemDetails.id
-        imgElm.src = (itemDetails.imageUrl) ? itemDetails.imageUrl : `${itemDetails.img_blob}`
+        divElm.classList.add(`item__${itemDetails.image_size}`)
+        divElm.dataset.id = itemDetails.image_id
+        imgElm.src = (itemDetails.image_url) ? itemDetails.image_url : `${itemDetails.img_blob}`
     
         divElm.innerHTML += `
         <div class="item-modal">
             <div class="item-header">
-                <div>${itemDetails.title}</div>
+                <div>${itemDetails.image_title}</div>
                 <button class="btn btn-remove">
                     <i class="fa-solid fa-trash"></i>
                 </button>

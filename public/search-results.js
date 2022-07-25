@@ -14,7 +14,7 @@ const addImagesToDom = (images) => {
         cardElm.innerHTML += `
         <div class="item-modal">
             <div class="item-header">
-            <button class="save-btn">Save</button>
+            <button class="save-btn btnOpenModal">Save</button>
             </div>
         </div>
         <img src="${imgSrc}" alt="${altImg}" loading="lazy"/>
@@ -22,6 +22,7 @@ const addImagesToDom = (images) => {
         parentContainer.appendChild(cardElm);
     })
     document.querySelector('.root').appendChild(parentContainer)
+    APP.addListeners();
 }
 
 window.addEventListener('load', async (e) => {
@@ -37,31 +38,14 @@ window.addEventListener('load', async (e) => {
     });
     const data = await res.json();
     const allImages = data.photos;
+    console.log(allImages)
     addImagesToDom(allImages)
-
-    // create dom modal element
-    const domSaveButtons = document.querySelectorAll('.save-btn')
-    const modal = new Modal();
-    domSaveButtons.forEach(button => {
-        button.addEventListener('click', e => {
-            modal.showModal();
-
-        })
-    })
-    // domSaveButtons.forEach(button => {
-        
-    //     button.addEventListener('click', e => {
-    //         const rootCard = e.target.parentElement.parentElement.parentElement;
-    //         const domImageSrc = rootCard.querySelector('img').src;
-    //         const imgElm = document.createElement('img')
-    //         imgElm.src = domImageSrc;
-    //         modal.style.display = 'flex';
-    //         document.querySelector('label.upload-image-label').style.display = 'none';
-    //         document.querySelector('.section2 .item-upload').style.display = 'block';
-    //         document.querySelector('.section2 .item-upload').appendChild(imgElm);
-    //     })
-
-        
-    // })
-    
 })
+
+const SEARCH = {
+    params: null,
+    query: null,
+    init: {
+        
+    }
+}

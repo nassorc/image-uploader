@@ -4,50 +4,52 @@ const ImageModel = require('../models/image-item-model');
 const uniqid = require('uniqid');
 
 exports.uploadImageItem = async (req, res, next) => {
-    const uploadFile = req.files[Object.keys(req.files)];
-    const imageItemDetails = req.body;
-    const imageNameId = uniqid(); 
-    imageItemDetails.imageName = imageItemDetails.imageName.split('.')[0] + '-' + imageNameId + '.' + imageItemDetails.imageName.split('.')[1]
-    const imageRef = ref(storage, imageItemDetails.imageName)
-    uploadBytes(imageRef, uploadFile.data)
-    .then(async (snapshot) => {
-        try {
-            let returnObject = [];
-            let response = await ImageModel.saveItem(imageItemDetails);
-            let userId = response[0]['insertId']
-            let userData = (await ImageModel.findById(userId))[0][0];
-            let url = await getImageFile(userData['image_file_name']);
-            returnObject.push(createImageObject(userData, url));
-            return res.status(200).json(returnObject);
+    // save to firebase if user uploads local file
+    // save url to database otherwise
+    let newImageName;
+    let url;
+    if (req.files) {
+        const file = Object.values(req.files)[0];
+        const imageBuffer = file.data;  // values return an array
+        newImageName = (file.name.split('.'))[0] + '-' + uniqid() + '.' + (file.name.split('.'))[1];
+        
+        // firebase reference
+        const imageRef = ref(storage, newImageName);
+        // upload to firebase
+        await uploadBytes(imageRef, imageBuffer);
+        url = await getDownloadURL(imageRef);
+    } else {
+        newImageName = 'image';
+        url = req.body.imgBlob
+    }
 
-        } catch (err) {
-            console.log(err);
-            return res.status(501).json({message: 'Error'})
-        }
-    });
+    const {author, createdOn, title, description, destination, itemSize} = req.body;
+    const data = {
+        author, createdOn, title, description, destination, itemSize, newImageName, url
+    }
+    try {
+        const response = await ImageModel.saveItem(data);
+        const recordId = response[0]['insertId'];
+        return res.status(200).json({url: url, id: recordId});
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({error: err});
+    }
 
 }
 
 exports.deleteImageItem = async (req, res, next) => {
-    // delete file from firebase
+
     // delete database record
     const id = req.params['id'];
     try {
-        const imagePath = (await ImageModel.findById(id))[0][0]['image_file_name'];
+        const response = await ImageModel.deleteById(id);
+        return res.status(200).json({message: 'image deleted'})
+
     } catch (err) {
         console.log(err);
-        return res.send(500).json({message: err.message});
+        return res.status(500).json({message: err.message});
     }
-
-    const imageRef = ref(storage, imagePath);
-    deleteObject(imageRef).then(() => {
-        ImageModel.deleteById(id)
-        return res.status(200).json({message: 'okok'})
-    }). catch((err) => {
-        console.log(err);
-        return res.status(500).json({message: 'can not delete file from firebase'})
-
-    })
 }
 
 async function getImageFile (imagePath) {
@@ -64,28 +66,12 @@ async function getImageFile (imagePath) {
 
 exports.getAllImageFiles = async (req, res, next) => {
     try {
-        const allImageDetails = [];
         const [allImages, _] = await ImageModel.findAll();
-
-        for (let item of allImages) {
-            const imageRef = ref(storage, item.image_file_name);
-            let url;
-            try {
-                url = await getDownloadURL(imageRef);
-            } catch (err) {
-                continue;
-            }
-            allImageDetails.push(createImageObject(item, url));
-        }
-        res.status(200).json(allImageDetails);
+        res.status(200).json(allImages);
     } catch(err) {
         console.log(err)
     }
 }
-
-exports.getOne = async (req,res,next) => {
-    const query = req.params;
-} 
 
 const createImageObject = (imageDetails, imageUrl) => {
     return {
@@ -100,3 +86,7 @@ const createImageObject = (imageDetails, imageUrl) => {
         imageUrl: imageUrl,
     }
 }
+
+exports.getOne = async (req,res,next) => {
+    const query = req.params;
+} 
