@@ -20,6 +20,10 @@ app.use(express.static(path.join(__dirname, '/upload' )))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.get('/login', (req, res) => {
+    res.json({message: 'login'})
+});
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
 })
